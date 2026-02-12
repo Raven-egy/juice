@@ -5,13 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create .love File
         run: zip -9 -r juice.love .
 
       - name: Build Android APK
-        uses: nobu-games/love-android-builder@v1
+        uses: akatake/love-android-builder@main
         with:
           version: 11.4
           bundleId: com.raven.juice
