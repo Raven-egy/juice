@@ -1,11 +1,14 @@
-name: Build My APK
+name: Build Single APK
 on: push
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Zip
+        run: sudo apt-get install zip
 
       - name: Create Love File
         run: zip -9 -r juice.love .
@@ -14,10 +17,15 @@ jobs:
         run: |
           curl -L -o love-android.apk https://github.com/love2d/love-android/releases/download/11.4/love-11.4-android-universal.apk
 
-      - name: Upload Result
+      - name: Merge Game into APK
+        run: |
+          # هذه الخطوة هي التي تدمج اللعبة داخل التطبيق ليصبح ملفاً واحداً
+          mkdir -p combined
+          cp love-android.apk juice-game.apk
+          zip -g juice-game.apk juice.love
+
+      - name: Upload Single APK
         uses: actions/upload-artifact@v4
         with:
-          name: Final-Game-Package
-          path: |
-            juice.love
-            love-android.apk
+          name: Final-Single-APK
+          path: juice-game.apk
