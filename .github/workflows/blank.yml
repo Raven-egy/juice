@@ -1,0 +1,19 @@
+name: Build Game APK
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Create .love File
+        run: zip -9 -r juice.love .
+
+      - name: Build Android APK
+        uses: nobu-games/love-android-builder@v1
+        with:
+          version: 11.4
+          bundleId: com.raven.juice
+          appName: JuiceGame
+          loveFile: juice.love
