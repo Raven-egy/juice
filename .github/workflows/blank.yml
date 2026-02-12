@@ -7,13 +7,23 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
       - name: Create .love File
         run: zip -9 -r juice.love .
 
-      - name: Build Android APK
-        uses: akatake/love-android-builder@main
+      - name: Download LÖVE Android Source
+        run: |
+          curl -L -o love-android.apk https://github.com/love2d/love-android/releases/download/11.4/love-11.4-android-universal.apk
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
-          version: 11.4
-          bundleId: com.raven.juice
-          appName: JuiceGame
-          loveFile: juice.love
+          name: Game-Files
+          path: |
+            juice.love
+            love-android.apk
